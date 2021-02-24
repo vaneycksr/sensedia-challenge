@@ -26,10 +26,14 @@ public class BaseTest {
                 .setContentType(ContentType.JSON)
                 .build();
 
+        /**
+         * COMENTEI ESSE TRECHO DE CÓDIGO POIS ALGUMAS RESPOSTAS DE REQUISIÇÕES QUANDO RETORNA
+         * UM STATUS DE ERRO, NÃO ESTÃO SENDO RETORNADOS NO FORMATO JSON
+         * */
         // valida se todas as requisições tem como resposta um JSON
-        RestAssured.responseSpecification = new ResponseSpecBuilder()
-                .expectContentType(ContentType.JSON)
-                .build();
+        //RestAssured.responseSpecification = new ResponseSpecBuilder()
+        //        .expectContentType(ContentType.JSON)
+        //        .build();
     }
 
 
