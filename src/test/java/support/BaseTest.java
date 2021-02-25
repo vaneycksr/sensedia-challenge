@@ -99,5 +99,4 @@ public class BaseTest {
                 statusCode(HttpStatus.SC_OK).
                 body("name", is("EDITOOOU"));
     }
-
 }

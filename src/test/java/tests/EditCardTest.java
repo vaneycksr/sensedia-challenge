@@ -111,4 +111,31 @@ public class EditCardTest extends BaseTest {
 
         removeCard(idFirstCard);
     }
+
+    @Test
+    public void testMudarCardDeIdList(){
+
+        Credentials credentials = new Credentials();
+
+        credentials.setToken("6b282b1ca98e76ba4e4ef4b69957bd2504209bb63cba2d22e4b8c2116c611fb7");
+        credentials.setKey("b76488a0cb0944040e4ac8d4aeaf41f7");
+        credentials.setIdList("6034497434582f128505ef8a");
+
+        String idFirstCard = createCardAndReturnId();
+
+        given().
+                pathParam("id",idFirstCard).
+                queryParam("key",credentials.getKey()).
+                queryParam("token",credentials.getToken()).
+                queryParam("name","EDITOOOU").
+                queryParam("idList","60345422f6dba5126d556b2e").
+        when().
+                put(CARD_ID).
+        then().
+                statusCode(HttpStatus.SC_OK).
+                body("name", is("EDITOOOU")).
+                body("idList", is("60345422f6dba5126d556b2e"));
+
+        removeCard(idFirstCard);
+    }
 }

@@ -11,7 +11,6 @@ import static org.hamcrest.CoreMatchers.*;
 public class CreateCardTest extends BaseTest {
 
     private static final String CARD = "/cards";
-    private static final String CARD_ID = "/cards/{id}";
 
     @Test
     public void testCriarCardComSucesso(){
