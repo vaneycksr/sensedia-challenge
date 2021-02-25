@@ -162,25 +162,4 @@ public class CreateCardTest extends BaseTest {
                 statusCode(HttpStatus.SC_BAD_REQUEST).
                 body(containsString("invalid value for idList"));
     }
-
-    public void removeCard(String idCard){
-
-        Credentials credentials = new Credentials();
-        /**
-         * DELETANDO CARD PELO ID
-         * */
-        credentials.setToken("6b282b1ca98e76ba4e4ef4b69957bd2504209bb63cba2d22e4b8c2116c611fb7");
-        credentials.setKey("b76488a0cb0944040e4ac8d4aeaf41f7");
-        credentials.setIdList("6034497434582f128505ef8a");
-
-        given().
-                pathParam("id",idCard).
-                queryParam("key",credentials.getKey()).
-                queryParam("token",credentials.getToken()).
-                queryParam("idList",credentials.getIdList()).
-        when().
-                delete(CARD_ID).
-        then().
-                statusCode(HttpStatus.SC_OK);
-    }
 }

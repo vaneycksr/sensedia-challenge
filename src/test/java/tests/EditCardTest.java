@@ -1,25 +1,22 @@
 package tests;
 
-import com.sun.xml.bind.v2.TODO;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 import support.BaseTest;
 import support.Credentials;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
 
 public class EditCardTest extends BaseTest {
 
     private static final String CARD = "/cards";
     private static final String CARD_ID = "/cards/{id}";
 
-   /**TODO USAR O JAVA FAKER, E COLOCAR OS METODOS DE EDITAR E REMOVER NO BASETEST**/
-
+   /**TODO USAR O JAVA FAKER**/
 
     @Test
-    public void testEditCardComSucesso(){
+    public void testEditarEExcluirCardComSucesso(){
 
         Credentials credentials = new Credentials();
 
@@ -43,50 +40,75 @@ public class EditCardTest extends BaseTest {
         removeCard(idCard);
     }
 
-    public void editCard(String idCard){
+    @Test
+    public void testEditarCardComTokenInvalido(){
 
         Credentials credentials = new Credentials();
-        /**
-         * DELETANDO CARD PELO ID
-         * */
-        credentials.setToken("6b282b1ca98e76ba4e4ef4b69957bd2504209bb63cba2d22e4b8c2116c611fb7");
+
+        credentials.setToken("6b2822d22e4b8c2116c611fb7");
         credentials.setKey("b76488a0cb0944040e4ac8d4aeaf41f7");
-        credentials.setIdList("6034497434582f128505ef8a");
+
+        String idFirstCard = createCardAndReturnId();
 
         given().
-                pathParam("id",idCard).
+                pathParam("id",idFirstCard).
                 queryParam("key",credentials.getKey()).
                 queryParam("token",credentials.getToken()).
-                queryParam("idList",credentials.getIdList()).
                 queryParam("name","EDITOOOU").
         when().
                 put(CARD_ID).
         then().
-                statusCode(HttpStatus.SC_OK).
-                body(
-                        "name", is("EDITOOOU")
-                );
+                statusCode(HttpStatus.SC_UNAUTHORIZED).
+                body(containsString("invalid token"));
+
+        removeCard(idFirstCard);
     }
 
-    public void removeCard(String idCard){
+    @Test
+    public void testEditarCardComKeyInvalido(){
 
         Credentials credentials = new Credentials();
-        /**
-         * DELETANDO CARD PELO ID
-         * */
+
         credentials.setToken("6b282b1ca98e76ba4e4ef4b69957bd2504209bb63cba2d22e4b8c2116c611fb7");
-        credentials.setKey("b76488a0cb0944040e4ac8d4aeaf41f7");
-        credentials.setIdList("6034497434582f128505ef8a");
+        credentials.setKey("b76488a0cb09af41f7");
+
+        String idFirstCard = createCardAndReturnId();
 
         given().
-                pathParam("id",idCard).
+                pathParam("id",idFirstCard).
                 queryParam("key",credentials.getKey()).
                 queryParam("token",credentials.getToken()).
-                queryParam("idList",credentials.getIdList()).
+                queryParam("name","EDITOOOU").
         when().
-                delete(CARD_ID).
+                put(CARD_ID).
         then().
-                statusCode(HttpStatus.SC_OK);
+                statusCode(HttpStatus.SC_UNAUTHORIZED).
+                body(containsString("invalid key"));
+
+        removeCard(idFirstCard);
     }
 
+    @Test
+    public void testEditarCardComIdInvalido(){
+
+        Credentials credentials = new Credentials();
+
+        credentials.setToken("6b282b1ca98e76ba4e4ef4b69957bd2504209bb63cba2d22e4b8c2116c611fb7");
+        credentials.setKey("b76488a0cb0944040e4ac8d4aeaf41f7");
+
+        String idFirstCard = createCardAndReturnId();
+
+        given().
+                pathParam("id","11111111111111xx").
+                queryParam("key",credentials.getKey()).
+                queryParam("token",credentials.getToken()).
+                queryParam("name","EDITOOOU").
+        when().
+                put(CARD_ID).
+        then().
+                statusCode(HttpStatus.SC_BAD_REQUEST).
+                body(containsString("invalid id"));
+
+        removeCard(idFirstCard);
+    }
 }
