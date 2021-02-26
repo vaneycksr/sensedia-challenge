@@ -1,5 +1,6 @@
 package tests;
 
+import com.github.javafaker.Faker;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 import support.BaseTest;
@@ -13,7 +14,8 @@ public class EditCardTest extends BaseTest {
     private static final String CARD = "/cards";
     private static final String CARD_ID = "/cards/{id}";
 
-   /**TODO USAR O JAVA FAKER**/
+    Faker faker = new Faker();
+    String example = faker.book().title();
 
     @Test
     public void testEditarEExcluirCardComSucesso(){
@@ -28,7 +30,7 @@ public class EditCardTest extends BaseTest {
                 queryParam("key",credentials.getKey()).
                 queryParam("token",credentials.getToken()).
                 queryParam("idList",credentials.getIdList()).
-                queryParam("name","testinho 4").
+                queryParam("name",example).
         when().
                 post(CARD).
         then().
@@ -54,7 +56,7 @@ public class EditCardTest extends BaseTest {
                 pathParam("id",idFirstCard).
                 queryParam("key",credentials.getKey()).
                 queryParam("token",credentials.getToken()).
-                queryParam("name","EDITOOOU").
+                queryParam("name",example).
         when().
                 put(CARD_ID).
         then().
@@ -78,7 +80,7 @@ public class EditCardTest extends BaseTest {
                 pathParam("id",idFirstCard).
                 queryParam("key",credentials.getKey()).
                 queryParam("token",credentials.getToken()).
-                queryParam("name","EDITOOOU").
+                queryParam("name",example).
         when().
                 put(CARD_ID).
         then().
@@ -102,7 +104,7 @@ public class EditCardTest extends BaseTest {
                 pathParam("id","11111111111111xx").
                 queryParam("key",credentials.getKey()).
                 queryParam("token",credentials.getToken()).
-                queryParam("name","EDITOOOU").
+                queryParam("name",example).
         when().
                 put(CARD_ID).
         then().
@@ -127,13 +129,13 @@ public class EditCardTest extends BaseTest {
                 pathParam("id",idFirstCard).
                 queryParam("key",credentials.getKey()).
                 queryParam("token",credentials.getToken()).
-                queryParam("name","EDITOOOU").
+                queryParam("name",example).
                 queryParam("idList","60345422f6dba5126d556b2e").
         when().
                 put(CARD_ID).
         then().
                 statusCode(HttpStatus.SC_OK).
-                body("name", is("EDITOOOU")).
+                body("name", is(example)).
                 body("idList", is("60345422f6dba5126d556b2e"));
 
         removeCard(idFirstCard);

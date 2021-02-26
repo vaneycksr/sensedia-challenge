@@ -1,5 +1,6 @@
 package tests;
 
+import com.github.javafaker.Faker;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 import support.BaseTest;
@@ -11,6 +12,9 @@ import static org.hamcrest.CoreMatchers.*;
 public class CreateCardTest extends BaseTest {
 
     private static final String CARD = "/cards";
+
+    Faker faker = new Faker();
+    String example = faker.artist().name();
 
     @Test
     public void testCriarCardComSucesso(){
@@ -25,14 +29,15 @@ public class CreateCardTest extends BaseTest {
                 queryParam("key",credentials.getKey()).
                 queryParam("token",credentials.getToken()).
                 queryParam("idList",credentials.getIdList()).
-                queryParam("name","testinho 4").
+                queryParam("name",example).
         when().
                 post(CARD).
          then().
                 statusCode(HttpStatus.SC_OK).
                 body("id", is(notNullValue())).
                 body("idList", is(notNullValue())).
-                // validar name
+                body("idList", is(notNullValue())).
+                body("name", is(example)).
         extract().
                 path("id");
 
@@ -50,7 +55,7 @@ public class CreateCardTest extends BaseTest {
                 queryParam("key","").
                 queryParam("token","").
                 queryParam("idList",credentials.getIdList()).
-                queryParam("name","testinho 4").
+                queryParam("name",example).
         when().
                 post(CARD).
         then().
@@ -70,7 +75,7 @@ public class CreateCardTest extends BaseTest {
                 queryParam("key","").
                 queryParam("token","").
                 queryParam("idList",credentials.getIdList()).
-                queryParam("name","testinho 4").
+                queryParam("name",example).
         when().
                 post(CARD).
         then().
@@ -91,7 +96,7 @@ public class CreateCardTest extends BaseTest {
                 queryParam("key",credentials.getKey()).
                 queryParam("token",credentials.getToken()).
                 queryParam("idList",credentials.getIdList()).
-                queryParam("name","testinho 4").
+                queryParam("name",example).
         when().
                 post(CARD).
         then().
@@ -112,7 +117,7 @@ public class CreateCardTest extends BaseTest {
                 queryParam("key",credentials.getKey()).
                 queryParam("token",credentials.getToken()).
                 queryParam("idList",credentials.getIdList()).
-                queryParam("name","testinho 4").
+                queryParam("name",example).
         when().
                 post(CARD).
         then().
@@ -133,7 +138,7 @@ public class CreateCardTest extends BaseTest {
                 queryParam("key",credentials.getKey()).
                 queryParam("token",credentials.getToken()).
                 queryParam("idList",credentials.getIdList()).
-                queryParam("name","testinho 4").
+                queryParam("name",example).
         when().
                 post(CARD).
         then().
@@ -154,7 +159,7 @@ public class CreateCardTest extends BaseTest {
                 queryParam("key",credentials.getKey()).
                 queryParam("token",credentials.getToken()).
                 queryParam("idList",credentials.getIdList()).
-                queryParam("name","testinho 4").
+                queryParam("name",example).
         when().
                 post(CARD).
         then().
